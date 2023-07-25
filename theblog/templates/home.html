@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row no-gutters">
+    <div class="col-md-4 my-3">
+        <img src="{% static 'theblog/images/motivation.jpg' %}" class="img-fluid mb-4 post-image">
+    </div>
+    <div class="col-md-4 my-3">
+        <img src="{% static 'theblog/images/motivation (2).jpg' %}" class="img-fluid mb-4 post-image">
+    </div>
+    <div class="col-md-4 my-3">
+        <img src="{% static 'theblog/images/motivation3.jpeg' %}" class="img-fluid mb-4 post-image">
+    </div>
+</div>
+
+<h1 class='text-center'>Post</h1>
+<ul>
+    {% for post in object_list %}
+        {% if forloop.counter <= 3 %}
+        <div class="card mb-3 mt-4">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a> {{ post.post_date }}--
+                    <a href="{% url 'category' post.category %}">{{ post.category }}</a>
+                    {{ post.author.first_name }} {{ post.author.last_name }}
+                    {% if user.is_authenticated %}
+                        {% if user.id == post.author.id %}
+                            --<a href="{% url 'edit-post' post.pk %}">Edit</a>
+                            <a href="{% url 'delete-post' post.pk %}">Delete</a><br>
+                        {% endif %}
+                    {% endif %}
+                </h5>
+                <p>{{ post.snippet }}</p>
+                <!-- Add any additional content you want to show for each post -->
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+</ul>
+
+<!-- Add content in the center with a static image and beautiful motivational quotes -->
+<div class="row mt-5 justify-content-center">
+    <div class="col-md-8">
+        <div class="card border p-1">
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <img src="{% static 'theblog/images/profile.jpg' %}" class="img-fluid square" alt="Motivation Center Image" style="max-width: 200px; height:220">
+                </div>
+                <div class="col-md-8">
+                    <blockquote class="blockquote">
+                        <p class="mb-0">"Our life is shaped by our mind, for we become what we think."</p>
+                        
+                    </blockquote>
+                    <blockquote class="blockquote mt-3">
+                        <p class="mb-0">"The only way to do great work is to love what you do.</p>
+                    
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</div>
+
+
+<style>
+    /* Custom CSS to set the same size for all post images */
+    .post-image {
+        width: 100%;
+        height: 350px; /* Set the desired height for all images */
+        object-fit: cover;
+    }
+</style>
+
+{% endblock content %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if category_posts %}
+<div class="post-box"> <!-- Add a div with the class 'post-box' -->
+    <h1>{{ cats }}</h1>
+
+    <ul class="list-group"> <!-- Use Bootstrap's list-group class -->
+        {% for post in category_posts %}
+        <li class="list-group-item"> <!-- Use Bootstrap's list-group-item class -->
+            {{ post.title }}  {{ post.created_date }}
+            <br>
+            {{ post.author.username }} 
+            {{ post.author.last_name }}
+            <br>
+            {% if user.is_authenticated %}
+                <!-- Add any additional content specific to authenticated users here -->
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div> <!-- Closing the post-box div -->
+{% else %}
+<center>
+    <br><br>
+    <h3>This page does not exist</h3>
+</center>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,31 @@
+{% extends 'base.html'%}
+{% block title %}Create New blog{% endblock%}
+
+{% block content %}
+
+
+<br>
+<center>
+{% if user.is_authenticated %}
+<h1>Add Post</h1>
+</center>
+<br>
+<div class='form-group'>
+<form method='post' enctype='multipart/form-data'>
+    {% csrf_token %}
+    {{ form.media }}
+    {{form.as_p}}
+    <center>
+    <button class='btn btn-primary'>Post</button>
+    </center>
+
+</div>
+{% else %}
+Please login to add a post
+
+{% endif %}
+
+
+
+
+{% endblock %}

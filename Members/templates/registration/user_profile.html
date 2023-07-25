@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="card mb-3 mt-4">
+    <div class="d-flex justify-content-center align-items-center">
+        {% if page_user.profile_pic %}
+        <img class="card-img-top my-3" src="{{page_user.profile_pic.url}}" alt="Card image cap" style="height: 300px; width: 300px; object-fit: cover; border-radius: 50%;">
+        {% else %}
+        <img class="card-img-top my-3" src="{% static 'theblog/images/default.jpeg' %}" alt="Card image cap" style="height: 300px; width: 300px; object-fit: cover; border-radius: 50%;">
+        {% endif %}
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{page_user.user.username}}</h5>
+      <p class="card-text">{{ page_user.bio }}</p>
+    </div>
+</div>
+{% for post in user_post %}
+<div class="card mb-3 mt-4">
+    <div class="card-body">
+        <h5 class="card-title">{{post.title}}</h5>
+        {% if header_image %}
+        <img class="card-img-top" src="{{post.header_image.url}}" alt="Card image cap" height="400">
+        {% endif %}
+        <p class="card-text">{{ post.body|safe|slice:200 }}</p>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

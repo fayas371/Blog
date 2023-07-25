@@ -1,0 +1,26 @@
+{% extends 'base.html'%}
+{% block title %}Edit Profile{% endblock%}
+
+{% block content %}
+<br>
+<center>
+
+<h1>Edit Settings </h1>
+
+</center>
+{{user.userprofile.bio}}
+<br>
+<div class='form-group'>
+<form method='post'>
+    {% csrf_token %}
+    {{form.as_p}}
+    <center>
+    <button class='btn btn-primary'>Update</button>
+    <br><br>
+    <a class='btn btn-secondary' href='{% url 'password-change'%}'>ChangePassword</a>
+    </center>
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html'%}
+{% block title %}Create New blog{% endblock%}
+
+{% block content %}
+
+
+<div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
+    <div class="card-body">
+        <h4 class="card-title mb-4 text-center">Login </h4>
+<form method='post'>
+    {% csrf_token %}
+    {{form.as_p}}
+
+    <center>
+    <button class='btn btn-primary'>Login</button>
+</center>
+
+</div>
+</div>
+
+
+
+
+
+{% endblock %}

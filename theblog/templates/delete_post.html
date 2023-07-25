@@ -1,0 +1,31 @@
+{% extends 'base.html'%}
+{% block title %}Create New blog{% endblock%}
+
+{% block content %}
+<br>
+<center>
+    {% if post.author == request.user %}
+<h1>Delete Post:{{post.title}}</h1>
+</center>
+<br>
+
+<div class='form-group'>
+<form method='post'>
+    {% csrf_token %}
+    
+    <center>
+        <strong>Are you sure you want to delete</strong>
+        <br>
+    <button class='btn btn-danger'>Delete post</button>
+    </center>
+    {% else %}
+    You are not authorized for this action! Please login or register as a new user
+    {% endif %}
+
+</div>
+
+
+
+
+
+{% endblock %}
