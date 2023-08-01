@@ -1,16 +1,15 @@
-{%extends 'base.html'%}
+{% extends 'base.html' %}
+
 {% block content %}
-
-<h1>Category</h1>
-
-<ul>
-    
-    {% for item in cat_menu_list %}
-    <li><a class="dropdown-item" href="{%url 'category' item %}">{{item}}</a>
-    {% endfor %}
-  </div>
-  
-</li>
-</ul>
-
-{% endblock content%}
+<center>
+  <h1>Category</h1>
+</center>
+<div style="display: flex; flex-wrap: wrap; justify-content: center;">
+  {% for item in cat_menu_list %}
+    <div style="flex: 0 0 30%; margin: 15px; text-align: center; border: 1px solid #ccc; padding: 10px;">
+      <img src="{{ item.cover.url }}" alt="coverpic" style="width: 350px; height: 150px; object-fit: cover;">
+      <a class="dropdown-item" href="{% url 'category' item %}">{{ item }}</a>
+    </div>
+  {% endfor %}
+</div>
+{% endblock content %}

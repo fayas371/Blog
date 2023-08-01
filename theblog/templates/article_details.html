@@ -10,8 +10,8 @@
       <small>By: {{post.author.username}}
         <br>
         {% if user == post.author %}
-        <a href="{% url 'edit-post' post.pk %}">Edit</a>
-        <a href="{% url 'delete-post' post.pk %}">Delete</a>
+        <a href="{% url 'edit-post' post.pk %}" class='btn btn-info'>Edit</a>
+        <a href="{% url 'delete-post' post.pk %}" class='btn btn-danger'> Delete</a>
         {% endif %}
       </small><br>
       {{post.created_date}}
@@ -21,7 +21,9 @@
     <img src="{{post.header_image.url}}" class="img-fluid my-4">
     {% endif %}
 
-    {{post.body|safe}}
+    <div class="post-body">
+      {{post.body|safe}}
+    </div>
 
     <br><br>
     <center>
@@ -98,5 +100,43 @@
     </center>
   </div>
 </div>
+<style>
+  /* CSS to style the post body images */
+  .post-body img {
+    max-width: 100%;
+    height: auto;
+  }
 
+  .post-body {
+    /* Additional CSS for the post body container */
+    max-width: 100%;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .post-body img.small-img {
+    /* CSS for small images */
+    max-width: 100%;
+    height: auto;
+  }
+
+  .post-body img.large-img {
+    /* CSS for large images */
+    max-width: 100%;
+    height: auto;
+  }
+</style>
+
+<script>
+  // JavaScript/jQuery to dynamically adjust image size in the post body
+  $(document).ready(function () {
+    $('.post-body img').each(function () {
+      if (this.width < 300) {
+        $(this).addClass('small-img');
+      } else {
+        $(this).addClass('large-img');
+      }
+    });
+  });
+</script>
 {% endblock %}

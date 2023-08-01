@@ -32,11 +32,12 @@ class PostForm(forms.ModelForm):
 class EditForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields=('title','title_tag','body','snippet')
+        fields=('title','title_tag','category','body','snippet','header_image')
 
         widgets={
         'title':forms.TextInput(attrs={'class':'form-control','placeholder':'Enter the title of the post'}),
         'title_tag':forms.TextInput(attrs={'class':'form-control','placeholder':'Enter the title tag'}),
+        'category':forms.Select(choices=choices_list,attrs={'class':'form-control'}),
         #'body':forms.Textarea(attrs={'class':'form-control','rows':'4'}),
         'snippet':forms.Textarea(attrs={'class':'form-control','rows':'4'}),
         }

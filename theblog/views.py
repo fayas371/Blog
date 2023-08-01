@@ -5,6 +5,7 @@ from django.views.generic import ListView,DetailView,CreateView,DeleteView,Updat
 from .models import Post,Category
 from .forms import PostForm,EditForm
 from django.urls import reverse_lazy,reverse
+from bs4 import BeautifulSoup
 # Create your views here.
 def LikeView(request,pk):
     post=get_object_or_404(Post,id=request.POST.get('post_id'))
@@ -23,17 +24,28 @@ class HomeView(ListView):
     model = Post
     template_name='home.html'
     ordering=['-id']
+    context_object_name='object_list'
 
     def get_context_data(self, *args,**kwargs):
         cat_menu=Category.objects.all()
         context=super(HomeView,self).get_context_data(*args,**kwargs)
         context["cat_menu"]=cat_menu
+        posts = context['object_list']
+        for post in posts:
+            post.first_image_url = post.get_first_image_url()
+            post.total_likes = post.likes.count()
+
+
         return context
 
 
 def CategoryView(request,cats):
 
-    category_posts=Post.objects.filter(category=cats.replace('-',' '))
+    category_posts = Post.objects.filter(category=cats.replace('-', ' '))
+
+    for post in category_posts:
+            post.first_image_url = post.get_first_image_url()
+        
 
     return render(request,'categories.html',{'category_posts':category_posts})
     
@@ -93,4 +105,17 @@ class DeletePost(DeleteView):
     template_name='delete_post.html'
     success_url=reverse_lazy('home')
 
+class AllPostView(ListView):
+    model = Post
+    template_name='posts.html'
+    ordering=['-id']
+    context_object_name='object_list'
 
+    def get_context_data(self, *args,**kwargs):
+        cat_menu=Category.objects.all()
+        context=super(AllPostView,self).get_context_data(*args,**kwargs)
+        context["cat_menu"]=cat_menu
+        posts = context['object_list']
+        for post in posts:
+            post.first_image_url = post.get_first_image_url()
+        return context

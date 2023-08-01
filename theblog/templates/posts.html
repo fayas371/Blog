@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+<center>
+<h1>Posts</h1>
+</center>
+<div class="row">
+    {% for post in object_list %}
+        <div class="col-md-6">
+            <div class="card mb-3 mt-4">
+                <div class="square-image-container">
+                    <img src="{{ post.first_image_url }}" class="img-fluid square-image">
+                    {% if user.is_authenticated and user.id == post.author.id %}
+                        <div class="edit-delete-container">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    ...
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="{% url 'edit-post' post.pk %}">Edit</a>
+                                    <a class="dropdown-item" href="{% url 'delete-post' post.pk %}">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a> {{ post.post_date }}--
+                    
+                    </h5>
+                    <p>{{ post.author.first_name }} {{ post.author.last_name }}</p>
+                    {{post.total_likes}} likes
+                </div>
+            </div>
+        </div>
+        {% if forloop.counter|divisibleby:2 or forloop.last %}
+            </div><div class="row">
+        {% endif %}
+    {% endfor %}
+</div>
+<style>
+    .square-image-container {
+        position: relative;
+    }
+
+    .square-image {
+        object-fit: cover;
+        width: 100%;
+        height: 200px;
+    }
+
+    .edit-delete-container {
+        position: absolute;
+        bottom: 0;
+        
+        right: 0;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 5px;
+    }
+</style>
+
+{% endblock %}

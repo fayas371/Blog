@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from datetime import datetime,date
 from ckeditor.fields import RichTextField
+from bs4 import BeautifulSoup
 # Create your models here.
 
 
@@ -59,3 +60,11 @@ class Post(models.Model):
         return reverse("article-detail", kwargs={"pk": self.pk})
     
 
+    def get_first_image_url(self):
+        if self.body:
+            
+            soup = BeautifulSoup(self.body, 'html.parser')
+            img_tag = soup.find('img')
+            if img_tag:
+                return img_tag['src']
+        return None

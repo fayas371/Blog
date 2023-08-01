@@ -1,28 +1,60 @@
 {% extends 'base.html' %}
 {% block content %}
-{% if category_posts %}
-<div class="post-box"> <!-- Add a div with the class 'post-box' -->
-    <h1>{{ cats }}</h1>
 
-    <ul class="list-group"> <!-- Use Bootstrap's list-group class -->
-        {% for post in category_posts %}
-        <li class="list-group-item"> <!-- Use Bootstrap's list-group-item class -->
-            {{ post.title }}  {{ post.created_date }}
-            <br>
-            {{ post.author.username }} 
-            {{ post.author.last_name }}
-            <br>
-            {% if user.is_authenticated %}
-                <!-- Add any additional content specific to authenticated users here -->
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
-</div> <!-- Closing the post-box div -->
-{% else %}
-<center>
-    <br><br>
-    <h3>This page does not exist</h3>
-</center>
-{% endif %}
-{% endblock content %}
+<h1>Post</h1>
+
+<div class="row">
+    {% for post in category_posts %}
+        <div class="col-md-6">
+            <div class="card mb-3 mt-4">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        {% if post.first_image_url %}
+                        <center>
+                            <div class="square-image-container">
+                                <img src="{{ post.first_image_url }}" class="img-fluid square-image">
+                            </div>
+                        </center>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a> {{ post.post_date }}--
+                                <a href="{% url 'category' post.category %}">{{ post.category }}</a>
+                                
+                                {% if user.is_authenticated %}
+                                    {% if user.id == post.author.id %}
+                                        --<a href="{% url 'edit-post' post.pk %}">Edit</a>
+                                        <a href="{% url 'delete-post' post.pk %}">Delete</a><br>
+                                    {% endif %}
+                                {% endif %}
+                            </h5>
+                            <p>{{ post.author.first_name }} {{ post.author.last_name }}</p>
+                            <!-- Add any additional content you want to show for each post -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if forloop.counter|divisibleby:2 or forloop.last %}
+            </div><div class="row">
+        {% endif %}
+    {% endfor %}
+</div>
+<style>
+    .square-image-container {
+        width: 180px; /* Set the desired square width here */
+        height: 200px; /* Set the desired square height here */
+        overflow: hidden;
+        margin: 0 auto;
+    }
+
+    .square-image {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+{% endblock %}

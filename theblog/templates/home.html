@@ -19,57 +19,85 @@
     {% for post in object_list %}
         {% if forloop.counter <= 3 %}
         <div class="card mb-3 mt-4">
-            <div class="card-body">
-                <h5 class="card-title">
-                    <a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a> {{ post.post_date }}--
-                    <a href="{% url 'category' post.category %}">{{ post.category }}</a>
-                    {{ post.author.first_name }} {{ post.author.last_name }}
-                    {% if user.is_authenticated %}
-                        {% if user.id == post.author.id %}
-                            --<a href="{% url 'edit-post' post.pk %}">Edit</a>
-                            <a href="{% url 'delete-post' post.pk %}">Delete</a><br>
-                        {% endif %}
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    {% if post.first_image_url %}
+                    <center>
+                        <div class="square-image-container">
+                            <img src="{{ post.first_image_url }}" class="img-fluid square-image">
+                        </div>
+                    </center>
                     {% endif %}
-                </h5>
-                <p>{{ post.snippet }}</p>
-                <!-- Add any additional content you want to show for each post -->
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a> {{ post.post_date }}--
+                            <a href="{% url 'category' post.category %}">{{ post.category }}</a>
+                            {{ post.author.first_name }} {{ post.author.last_name }}
+                            {% if user.is_authenticated %}
+                                {% if user.id == post.author.id %}
+                                    --<a href="{% url 'edit-post' post.pk %}">Edit</a>
+                                    <a href="{% url 'delete-post' post.pk %}">Delete</a><br>
+                                {% endif %}
+                            {% endif %}
+                        </h5>
+                        <p>{{ post.snippet }}</p>
+                        {{post.total_likes}} likes
+
+                    </div>
+                </div>
             </div>
         </div>
         {% endif %}
     {% endfor %}
+    <center>
+    <a class="btn btn-success" href="{%url 'all-posts'%}">More Posts</a>
+</center>
 </ul>
 
-<!-- Add content in the center with a static image and beautiful motivational quotes -->
 <div class="row mt-5 justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-8 my-4">
         <div class="card border p-1">
             <div class="row">
                 <div class="col-md-4 text-center">
-                    <img src="{% static 'theblog/images/profile.jpg' %}" class="img-fluid square" alt="Motivation Center Image" style="max-width: 200px; height:220">
+                    <img src="{% static 'theblog/images/profile.jpg' %}" class="img-fluid square" alt="Motivation Center Image" style="max-width: 200px; height: 220px; object-fit: cover;">
                 </div>
                 <div class="col-md-8">
+                    <br>
                     <blockquote class="blockquote">
-                        <p class="mb-0">"Our life is shaped by our mind, for we become what we think."</p>
-                        
+                        <p class="mb-0">Our life is shaped by our mind, for we become what we think.</p>
                     </blockquote>
+                    <br>
                     <blockquote class="blockquote mt-3">
-                        <p class="mb-0">"The only way to do great work is to love what you do.</p>
-                    
+                        <p class="mb-0">The only way to do great work is to love what you do.</p>
                     </blockquote>
                 </div>
             </div>
         </div>
     </div>
-   
 </div>
-
 
 <style>
     /* Custom CSS to set the same size for all post images */
     .post-image {
-        width: 100%;
-        height: 350px; /* Set the desired height for all images */
+        width: 200px;
+        height: 450px; /* Set the desired height for all images */
         object-fit: cover;
+    }
+
+    /* Square image container */
+    .square-image-container {
+        width: 100%; /* Set the desired square width here */
+        height: 200px; /* Set the desired square height here */
+        overflow: hidden;
+        margin: 0 auto;
+    }
+
+    .square-image {
+        object-fit: cover; /* Use 'cover' to fully fit the image inside the container */
+        width: 100%;
+        height: 100%;
     }
 </style>
 
